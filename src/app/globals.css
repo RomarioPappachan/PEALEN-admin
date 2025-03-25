@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
+/* Default Light Mode */
 :root {
-  --background: #ffffff;
+  --background: #EAEAF2;
   --foreground: #171717;
+  --hover-background: #f9fafb;
+
+  --background-primary: #EAEAF2;
+  --background-secondary: #F2F2F2;
+  --background-tertiary: #FFFFFF;
+
+  --text-color-primary: #212121;
+  --text-color-secondary: #303030;
+  --text-color-tertiary: #171717;
+
+
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Dark Mode */
+.dark {
+  --background: #3C3C3C;
+  --foreground: #ededed;
+  --hover-background: #72C347;
+
+  --background-primary :#212121;
+  --background-secondary: #303030;
+  --background-tertiary: #171717;
+
+  --text-color-primary: #FFFFFF;
+  --text-color-secondary: #F2F2F2;
+  --text-color-tertiary: #EAEAF2;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Apply to everything */
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+  transition:  0.3s, color 0.3s;
+}
+
+/* Ensure Tailwind dark styles work */
+.dark * {
+  color: var(--foreground) !important;
 }
