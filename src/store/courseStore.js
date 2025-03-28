@@ -122,13 +122,13 @@ export const useCourseStore = create((set) => ({
   },
 
   // Update a course video
-  updateCourseVideo: async (videoId, updatedData) => {
+  editCourseVideo: async (courseId, updatedData) => {
     set({ loading: true, error: null });
     try {
-      const updatedVideo = await updateCourseVideo(videoId, updatedData);
+      const updatedVideo = await updateCourseVideo(courseId, updatedData);
       set((state) => ({
         videos: state.videos.map((video) =>
-          video.id === videoId ? updatedVideo : video
+          video.id === updatedData.id ? updatedData : video
         ),
         loading: false,
       }));
@@ -138,10 +138,10 @@ export const useCourseStore = create((set) => ({
   },
 
   // Delete a course video
-  removeCourseVideo: async (videoId) => {
+  removeCourseVideo: async (courseId, videoId) => {
     set({ loading: true, error: null });
     try {
-      await deleteCourseVideo(videoId);
+      await deleteCourseVideo(courseId, videoId);
       set((state) => ({
         videos: state.videos.filter((video) => video.id !== videoId),
         loading: false,

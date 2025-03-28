@@ -6,7 +6,7 @@ function ButtonComponent({ children, href }) {
   return (
     <Link
       href={href}
-      className="text-blue-500 hover:underline flex items-center"
+      className="text-blue-500 hover:underline flex items-center max-w-max my-6"
     >
       <LuChevronLeft className="text-2xl font-semibold" />
       {children}

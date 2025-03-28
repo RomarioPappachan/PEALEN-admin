@@ -1,4 +1,5 @@
 "use client";
+import Breadcrumb from "@/components/Breadcrumb";
 import ButtonComponent from "@/components/ui/Button";
 import { useCourseStore } from "@/store/courseStore";
 import { useParams, useRouter } from "next/navigation";
@@ -80,9 +81,10 @@ function EditCourseDetails() {
   };
 
   return (
-    <div className="p-6">
+    <div className="">
+      <Breadcrumb />
       <div className="w-1/2">
-        <div className="pb-6">
+        <div className="pb-6 max-w-max">
           <ButtonComponent href={`/dashboard/courses/${courseId}`}>
             Back to Course
           </ButtonComponent>
@@ -131,7 +133,7 @@ function EditCourseDetails() {
           />
 
           <label htmlFor="categoryId" className="font-semibold text-black">
-            Course Thumbnail :
+            Course Category :
           </label>
           <input
             id="categoryId"

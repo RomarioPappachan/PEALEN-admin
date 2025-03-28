@@ -3,6 +3,8 @@ import { useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 
 import { useCourseStore } from "@/store/courseStore";
+import Breadcrumb from "@/components/Breadcrumb";
+import ButtonComponent from "@/components/ui/Button";
 
 function UploadVideo() {
   const [videoData, setVideoData] = useState({
@@ -26,6 +28,8 @@ function UploadVideo() {
           videoUrl: "",
           demoVideourl: "",
           audioUrl: "",
+          videoTranscript: "",
+          animationUrl: "",
           videoSteps: [],
         },
       ],
@@ -89,8 +93,14 @@ function UploadVideo() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="mb-5 text-green-500 text-2xl font-medium">Add Videos</h1>
+    <div className="">
+      <Breadcrumb />
+
+      <ButtonComponent href={`/dashboard/courses/${courseId}/videos`}>
+        Back to course videos
+      </ButtonComponent>
+
+      <h1 className="my-5 text-black text-xl font-medium">Add New Videos</h1>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="space-y-4">
           {videoData.addVideos.map((video, index) => (
@@ -140,6 +150,24 @@ function UploadVideo() {
                 className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 required
               />
+              <input
+                type="text"
+                name="videoTranscript"
+                placeholder="Video Transcript"
+                value={video.videoTranscript}
+                onChange={(e) => handleVideoChange(index, e)}
+                className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                required
+              />
+              <input
+                type="url"
+                name="animationUrl"
+                placeholder="Animation URL"
+                value={video.animationUrl}
+                onChange={(e) => handleVideoChange(index, e)}
+                className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                required
+              />
 
               <h3 className="text-md font-semibold mt-3">Video Steps:</h3>
               {video.videoSteps.map((step, stepIndex) => (
@@ -185,7 +213,7 @@ function UploadVideo() {
           onClick={addVideo}
           className="bg-blue-400 text-white py-2 px-4 rounded-2xl hover:bg-blue-500 cursor-pointer"
         >
-          + Add New Video
+          + Add Video
         </button>
 
         {videoData.addVideos.length > 0 && (

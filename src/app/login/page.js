@@ -54,7 +54,7 @@ export default function LoginPage() {
       console.log(data);
 
       setAuth(data.adminDetails, data.token);
-      router.push("/dashboard");
+      router.push("/dashboard/courses");
     } catch (err) {
       setError("Invalid username or password");
     }

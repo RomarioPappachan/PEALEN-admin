@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useCourseStore } from "@/store/courseStore";
+import Link from "next/link";
+
+import { LuChevronLeft, LuPencilLine } from "react-icons/lu";
+import Breadcrumb from "@/components/Breadcrumb";
 
 function VideoDetail() {
   const { courseId, videoId } = useParams();
@@ -15,14 +19,29 @@ function VideoDetail() {
   }, [videoId]);
 
   return (
-    <div className="p-6">
+    <div className="">
+      <Breadcrumb />
+      <Link
+        href={`/dashboard/courses/${courseId}/videos`}
+        className="text-blue-500 hover:underline flex items-center"
+      >
+        <LuChevronLeft className="text-2xl font-semibold" /> Back to videos
+      </Link>
       {loading ? (
         <p>Loading...</p>
       ) : error ? (
         <p className="text-red-500">{error}</p>
       ) : (
-        <div className="p-4">
-          <h3 className="mt-8 text-2xl font-semibold">{video?.title}</h3>
+        <div className="pt-8">
+          <div className="flex justify-between items-end">
+            <h3 className="text-2xl font-semibold">{video?.title}</h3>
+            <Link
+              href={`/dashboard/courses/${courseId}/videos/${videoId}/edit`}
+              className="px-4 py-2 flex justify-center items-center gap-2 rounded-lg bg-red-400 text-white hover:bg-red-500"
+            >
+              <LuPencilLine /> Edit Video Details
+            </Link>
+          </div>
 
           <div className="mt-4 p-4 border-[1px] border-slate-300 rounded-lg">
             <div className="flex items-start justify-start gap-2">
@@ -51,6 +70,15 @@ function VideoDetail() {
                   <source src={video?.demoVideourl} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
+
+                <h4 className="mt-4 text-md font-semibold text-black">
+                  Video Thumbnail
+                </h4>
+                <img
+                  className="w-full max-w-md mt-2"
+                  src={video?.videoThumbnail}
+                  alt={`${video?.title} Thumbnail`}
+                />
               </div>
             </div>
 

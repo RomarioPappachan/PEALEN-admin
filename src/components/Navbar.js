@@ -46,6 +46,8 @@
 "use client";
 import { useState, useEffect } from "react";
 
+import { LuSearch, LuSun, LuMoon } from "react-icons/lu";
+
 function Navbar() {
   const [isDark, setIsDark] = useState(false);
 
@@ -73,37 +75,44 @@ function Navbar() {
   };
 
   return (
-    <nav className="ps-[50px] pe-[74px] pt-[42px] pb-[22px] flex justify-between items-center border-b-[1px] border-b-[#dcdce3] dark:border-b-gray-700 bg-[var(--background-primary)] dark:bg-[var(--background-primary)] text-[var(--foreground)]  dark:text-[var(--foreground)] transition-all duration-300">
-      <h1 className="text-[24px] font-bold text-[#121721] dark:text-white">
+    <nav className="ps-[50px] pe-[74px] pt-[42px] pb-[22px] flex justify-between items-center border-b border-b-[var(--background-secondary)] dark:border-b-[var(--background-secondary)] bg-[var(--background-primary)] dark:bg-[var(--background-primary)] text-[var(--foreground)]  dark:text-[var(--foreground)] transition-all duration-300">
+      <h1 className="text-[24px] font-bold text-[var(--text-color-primary)] dark:text-[var(--text-color-primary)]">
         Dashboard
       </h1>
 
       <div className="flex items-center">
         {/* Search Bar */}
-        <div className="w-[388px] h-[47px] flex items-center bg-white dark:bg-gray-800 rounded-[49px] px-[18px] space-x-[11px]">
-          <img src="/search-icon.svg" alt="search" className="size-[11px]" />
+        <div className="w-[388px] h-[47px] flex items-center bg-[var(--background-secondary)] dark:bg-[var(--background-secondary)] rounded-[49px] px-[18px] space-x-[11px]">
+          {/* <img src="/search-icon.svg" alt="search" className="size-[11px]" /> */}
+          <LuSearch className="text-2xl text-blue-500" />
           <input
             type="search"
             placeholder="Search"
-            className="w-full outline-none placeholder:text-[#B1B1B1] dark:placeholder:text-gray-400 rounded-[49px] bg-white dark:bg-gray-800 text-black dark:text-white"
+            className="w-full outline-none placeholder:text-[#B1B1B1] dark:placeholder:text-gray-400 bg-transparent text-[var(--text-color-primary)] dark:text-[var(--text-color-primary)]"
           />
         </div>
 
         {/* Dark Mode Toggle Button (No Change) */}
-        <button className="ms-[25px] me-[11px]" onClick={toggleDarkMode}>
-          <img
+        <button
+          className={`ms-[25px] me-[11px] size-12 cursor-pointer flex justify-center items-center rounded-full bg-[var(--background-secondary)]`}
+          onClick={toggleDarkMode}
+        >
+          {/* <img
             src="/dark-mode.svg"
             alt="Toggle Theme"
             className="w-[42px] h-[42px] cursor-pointer"
-          />
+          /> */}
+          {isDark ? (
+            <LuSun className="text-2xl" />
+          ) : (
+            <LuMoon className="text-2xl" />
+          )}
         </button>
 
         {/* User Profile */}
         <div className="flex items-center gap-x-3">
           <img src="/Avatar.svg" alt="User Avatar" />
-          <span className="text-[16px] text-[#121721] dark:text-green-300">
-            Jenny Peter
-          </span>
+          <span className="text-[16px] text-[#121721]">Jenny Peter</span>
           <img src="/down-arrow.svg" alt="dropdown" className="pt-1" />
         </div>
       </div>

@@ -156,17 +156,22 @@ export const createCourseVideo = async (courseId, videoData) => {
     return res;
   } catch (error) {
     throw new Error(
-      error.response?.data?.message || "Failed to update course video"
+      error.response?.data?.message || "Failed to create course video"
     );
   }
 };
 
 // Update a specific video
-export const updateCourseVideo = async (videoId, updatedData) => {
+export const updateCourseVideo = async (courseId, updatedData) => {
   try {
+    let videos = [];
+    videos.push(updatedData);
+
     const res = await axios.put(
-      `${API_URL}/videos/updateVideo/${videoId}`,
-      updatedData,
+      `${API_URL}/courses/manageVideos/${courseId}`,
+      {
+        updateVideos: videos,
+      },
       {
         headers: {
           Authorization: `${getToken()}`,
@@ -174,7 +179,8 @@ export const updateCourseVideo = async (videoId, updatedData) => {
         },
       }
     );
-    return res.data;
+
+    return res;
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Failed to update course video"
@@ -183,11 +189,20 @@ export const updateCourseVideo = async (videoId, updatedData) => {
 };
 
 // Delete a specific video
-export const deleteCourseVideo = async (videoId) => {
+export const deleteCourseVideo = async (courseId, videoId) => {
   try {
-    const res = await axios.delete(`${API_URL}/videos/deleteVideo/${videoId}`, {
-      headers: { Authorization: `${getToken()}` },
-    });
+    let videoIdArray = [];
+    videoIdArray.push(videoId);
+
+    const res = await axios.put(
+      `${API_URL}/courses/manageVideos/${courseId}`,
+      {
+        removeVideoIds: videoIdArray,
+      },
+      {
+        headers: { Authorization: `${getToken()}` },
+      }
+    );
 
     return res.data;
   } catch (error) {

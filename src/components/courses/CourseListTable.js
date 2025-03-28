@@ -335,9 +335,9 @@ function CourseListTable() {
   if (error) return <p className="text-red-500">{error}</p>;
 
   return (
-    <div className="overflow-x-auto p-4">
-      <table className="w-full text-left bg-[var(--background-tertiary)] shadow-md rounded-lg">
-        <thead className="bg-[var(--background-tertiary)] border-b">
+    <div className="overflow-x-auto">
+      <table className="w-full text-left bg-[var(--background-tertiary)] shadow-md rounded-lg overflow-hidden">
+        <thead className="bg-[var(--background-tertiary)] border-b border-b-[var(--background-secondary)]">
           <tr>
             <th className="p-4">Course Name</th>
             <th className="p-4">Instructor</th>
@@ -351,17 +351,21 @@ function CourseListTable() {
             courses.map((course) => (
               <tr
                 key={course.id}
-                className="bg-[var(--background-tertiary)] dark:bg-[var(--background-tertiary)] hover:bg-[var(--background-secondary)] dark:hover:bg-[var(--background-secondary)] border-b-[1px] border-b-[#dcdce3] dark:border-b-gray-700 last:border-0 transition-all duration-300"
+                className="bg-[var(--background-tertiary)] dark:bg-[var(--background-tertiary)] hover:bg-[var(--background-primary)] dark:hover:bg-[var(--background-primary)] border-b border-b-[var(--background-secondary)] dark:border-b-[var(--background-secondary)] last:border-0 transition-all duration-300"
               >
                 <td className="p-4 flex items-center gap-3">
                   <div className="w-10 h-10 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
                     <img src={course?.thumbnail} alt="Course Thumbnail" />
                   </div>
                   <div>
-                    <p className="font-semibold capitalize">{course?.title}</p>
-                    <p className="text-sm text-gray-500">
-                      {course?.category?.name}
-                    </p>
+                    <Link href={`/dashboard/courses/${course.id}`}>
+                      <p className="font-semibold capitalize">
+                        {course?.title}
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        {course?.category?.name}
+                      </p>
+                    </Link>
                   </div>
                 </td>
                 <td className="p-4 capitalize text-gray-600 text-sm">

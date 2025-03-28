@@ -39,7 +39,8 @@ function CreateCourse({ setIsCreateCourseOpen }) {
           videoUrl: "",
           demoVideourl: "",
           audioUrl: "",
-          demoAudiourl: "",
+          videoTranscript: "",
+          animationUrl: "",
           videoSteps: [], // New property to store steps
         },
       ],
@@ -200,10 +201,18 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />
                 <input
-                  type="url"
-                  name="demoAudiourl"
-                  placeholder="Demo Audio URL"
-                  value={video.demoAudiourl}
+                  type="text"
+                  name="videoTranscript"
+                  placeholder="Video Transcript"
+                  value={video.videoTranscript}
+                  onChange={(e) => handleVideoChange(index, e)}
+                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                />
+                <input
+                  type="text"
+                  name="animationUrl"
+                  placeholder="Animation URL"
+                  value={video.animationUrl}
                   onChange={(e) => handleVideoChange(index, e)}
                   className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />

@@ -1,12 +1,13 @@
-import React from 'react'
-import RootLayout from './layout'
+import React from "react";
+import RootLayout from "./layout";
+import Breadcrumb from "@/components/Breadcrumb";
 
 function page() {
   return (
-    
-      
-    <div>page</div>
-  )
+    <div>
+      <Breadcrumb />
+    </div>
+  );
 }
 
-export default page
+export default page;
