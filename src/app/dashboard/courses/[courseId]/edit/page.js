@@ -6,14 +6,16 @@ import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 function EditCourseDetails() {
-  const { course, editCourse, getCourses, getCourseById } = useCourseStore();
+  const {
+    course,
+    categories,
+    getCategories,
+    editCourse,
+    getCourses,
+    getCourseById,
+  } = useCourseStore();
 
   const [courseData, setCourseData] = useState({
-    // title: course?.title || "",
-    // description: course?.description || "",
-    // thumbnail: course?.thumbnail || "",
-    // categoryId: course?.categoryId || "",
-    // courseContents: course?.courseContents || [],
     title: "",
     description: "",
     thumbnail: "",
@@ -24,6 +26,11 @@ function EditCourseDetails() {
   const { courseId } = useParams(); // courseId from extracted from url
 
   const router = useRouter();
+
+  // loading course categories
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
 
   // Fetch course on mount
   useEffect(() => {
@@ -135,7 +142,7 @@ function EditCourseDetails() {
           <label htmlFor="categoryId" className="font-semibold text-black">
             Course Category :
           </label>
-          <input
+          {/* <input
             id="categoryId"
             type="text"
             name="categoryId"
@@ -144,7 +151,23 @@ function EditCourseDetails() {
             onChange={handleChange}
             className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-2 focus:border-green-300"
             required
-          />
+          /> */}
+          <select
+            id="categoryId"
+            name="categoryId"
+            value={courseData.categoryId}
+            className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-2 focus:border-green-300"
+            onChange={handleChange}
+          >
+            <option value="" disabled selected>
+              Select a Category
+            </option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
 
           <label htmlFor="courseContents" className="font-semibold text-black">
             Course Contents :

@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
-import { createCourse } from "@/api/course";
+import React, { useEffect, useState } from "react";
 import { useCourseStore } from "@/store/courseStore";
 
 function CreateCourse({ setIsCreateCourseOpen }) {
-  const getCourses = useCourseStore((state) => state.getCourses);
+  const { categories, getCategories, addCourse, getCourses, loading } =
+    useCourseStore();
 
   const [courseData, setCourseData] = useState({
     title: "",
@@ -15,6 +15,13 @@ function CreateCourse({ setIsCreateCourseOpen }) {
     categoryId: "",
     videos: [],
   });
+
+  console.log(categories);
+
+  // loading course categories
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -88,7 +95,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
           .split(",")
           .map((item) => item.trim()),
       };
-      await createCourse(formattedData);
+      await addCourse(formattedData);
       console.log("Course successfully created!");
       setIsCreateCourseOpen(false);
       getCourses(); // Refresh course list
@@ -98,7 +105,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
   };
 
   return (
-    <div className="w-screen min-h-screen px-2 py-10 backdrop-blur-sm fixed left-0 top-0 flex justify-center items-center">
+    <div className="w-screen min-h-screen px-2 py-10 backdrop-blur-sm fixed left-0 top-0 flex justify-center items-center z-30">
       <div className="bg-[var(--background-tertiary)] dark:bg-[var(--background-tertiary)] dark:border-[var(--background-secondary)] p-6 rounded-2xl shadow-lg w-full max-h-[500px] max-w-[800px] overflow-auto">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-bold">Add New Course</h2>
@@ -117,7 +124,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
             placeholder="Course Title"
             value={courseData.title}
             onChange={handleChange}
-            className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+            className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
             required
           />
           <textarea
@@ -125,7 +132,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
             placeholder="Course Description"
             value={courseData.description}
             onChange={handleChange}
-            className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+            className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
             rows={3}
             required
           />
@@ -135,10 +142,10 @@ function CreateCourse({ setIsCreateCourseOpen }) {
             placeholder="Thumbnail URL"
             value={courseData.thumbnail}
             onChange={handleChange}
-            className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+            className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
             required
           />
-          <input
+          {/* <input
             type="text"
             name="categoryId"
             placeholder="Category ID"
@@ -146,14 +153,31 @@ function CreateCourse({ setIsCreateCourseOpen }) {
             onChange={handleChange}
             className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
             required
-          />
+          /> */}
+
+          {/* Category Dropdown */}
+          <select
+            name="categoryId"
+            value={courseData.categoryId}
+            className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+            onChange={handleChange}
+          >
+            <option value="" disabled selected>
+              Select a Category
+            </option>
+            {categories.map((category) => (
+              <option key={category.id} value={category.id}>
+                {category.name}
+              </option>
+            ))}
+          </select>
           <input
             type="text"
             name="courseContents"
             placeholder="Course Contents (comma-separated)"
             value={courseData.courseContents}
             onChange={handleCourseContentsChange}
-            className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+            className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
             required
           />
           <div className="space-y-4">
@@ -165,7 +189,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   placeholder="Video Title"
                   value={video.title}
                   onChange={(e) => handleVideoChange(index, e)}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                  className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                   required
                 />
                 <input
@@ -174,7 +198,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   placeholder="Video Thumbnail URL"
                   value={video.videoThumbnail}
                   onChange={(e) => handleVideoChange(index, e)}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                  className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />
                 <input
                   type="url"
@@ -182,7 +206,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   placeholder="Video URL"
                   value={video.videoUrl}
                   onChange={(e) => handleVideoChange(index, e)}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                  className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />
                 <input
                   type="url"
@@ -190,7 +214,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   placeholder="Demo Video URL"
                   value={video.demoVideourl}
                   onChange={(e) => handleVideoChange(index, e)}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                  className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />
                 <input
                   type="url"
@@ -198,7 +222,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   placeholder="Audio URL"
                   value={video.audioUrl}
                   onChange={(e) => handleVideoChange(index, e)}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                  className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />
                 <input
                   type="text"
@@ -206,7 +230,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   placeholder="Video Transcript"
                   value={video.videoTranscript}
                   onChange={(e) => handleVideoChange(index, e)}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                  className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />
                 <input
                   type="text"
@@ -214,7 +238,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                   placeholder="Animation URL"
                   value={video.animationUrl}
                   onChange={(e) => handleVideoChange(index, e)}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                  className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                 />
 
                 <h3 className="text-md font-semibold mt-3">Video Steps:</h3>
@@ -225,7 +249,7 @@ function CreateCourse({ setIsCreateCourseOpen }) {
                       value={step}
                       placeholder={`Step ${stepIndex + 1}`}
                       onChange={(e) => handleStepChange(index, stepIndex, e)}
-                      className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
+                      className="w-full p-2 px-4 text-gray-800 border border-gray-300 rounded-2xl outline-none focus:border-green-300"
                     />
                     <button
                       type="button"

@@ -5,13 +5,27 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL; // Base API URL
 // Get token from localStorage
 const getToken = () => localStorage.getItem("token");
 
+// Fetch all categories
+export const fetchCategories = async () => {
+  try {
+    const res = await axios.get(`${API_URL}/category/listCategories`, {
+      headers: { Authorization: `${getToken()}` },
+    });
+
+    return res.data;
+  } catch (error) {
+    console.log(error);
+
+    throw new Error(error.response?.data?.message || "Failed to fetch courses");
+  }
+};
+
 // Fetch all courses
 export const fetchCourses = async () => {
   try {
     const res = await axios.get(`${API_URL}/courses/listCourses`, {
       headers: { Authorization: `${getToken()}` },
     });
-    console.log(res);
 
     return res.data;
   } catch (error) {
@@ -30,7 +44,6 @@ export const fetchCourseById = async (courseId) => {
         headers: { Authorization: `${getToken()}` },
       }
     );
-    console.log(res);
 
     return res.data;
   } catch (error) {
@@ -51,7 +64,6 @@ export const createCourse = async (courseData) => {
         },
       }
     );
-    console.log(res);
 
     return res.data;
   } catch (error) {
@@ -103,12 +115,11 @@ export const deleteCourse = async (courseId) => {
 export const fetchCourseVideos = async (courseId) => {
   try {
     const res = await axios.get(
-      `${API_URL}/courses/getCourseVideos/${courseId}`,
+      `${API_URL}/videos/getCourseVideos/${courseId}`,
       {
         headers: { Authorization: `${getToken()}` },
       }
     );
-    console.log(res);
 
     return res.data;
   } catch (error) {
@@ -122,7 +133,7 @@ export const fetchCourseVideos = async (courseId) => {
 export const fetchCourseVideoById = async (videoId) => {
   try {
     const res = await axios.get(
-      `${API_URL}/courses/getVideoDetails/${videoId}`,
+      `${API_URL}/videos/getVideoDetails/${videoId}`,
       {
         headers: { Authorization: `${getToken()}` },
       }
@@ -142,7 +153,7 @@ export const createCourseVideo = async (courseId, videoData) => {
   console.log("Video Data :", videoData);
   try {
     const res = await axios.put(
-      `${API_URL}/courses/manageVideos/${courseId}`,
+      `${API_URL}/videos/manageVideos/${courseId}`,
       videoData,
       {
         headers: {
@@ -151,7 +162,6 @@ export const createCourseVideo = async (courseId, videoData) => {
         },
       }
     );
-    console.log(res);
 
     return res;
   } catch (error) {
@@ -168,7 +178,7 @@ export const updateCourseVideo = async (courseId, updatedData) => {
     videos.push(updatedData);
 
     const res = await axios.put(
-      `${API_URL}/courses/manageVideos/${courseId}`,
+      `${API_URL}/videos/manageVideos/${courseId}`,
       {
         updateVideos: videos,
       },
@@ -195,7 +205,7 @@ export const deleteCourseVideo = async (courseId, videoId) => {
     videoIdArray.push(videoId);
 
     const res = await axios.put(
-      `${API_URL}/courses/manageVideos/${courseId}`,
+      `${API_URL}/videos/manageVideos/${courseId}`,
       {
         removeVideoIds: videoIdArray,
       },
@@ -208,6 +218,58 @@ export const deleteCourseVideo = async (courseId, videoId) => {
   } catch (error) {
     throw new Error(
       error.response?.data?.message || "Failed to delete course video"
+    );
+  }
+};
+
+// Submit a new challenge
+export const submitChallenge = async (videoId, challengeData) => {
+  const formattedData = { addTest: challengeData };
+
+  try {
+    const res = await axios.put(
+      `${API_URL}/tests/manageTests/${videoId}`,
+      formattedData,
+      {
+        headers: {
+          Authorization: `${getToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to submit challenge"
+    );
+  }
+};
+
+// Update an existing challenge
+export const updateChallenge = async (videoId, challengeData) => {
+  try {
+    const formattedData = {
+      updateTest: {
+        testId: challengeData.id,
+        questions: challengeData.questions,
+        challenge: challengeData.challenge,
+      },
+    };
+
+    const res = await axios.put(
+      `${API_URL}/tests/manageTests/${videoId}`,
+      formattedData,
+      {
+        headers: {
+          Authorization: `${getToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to update challenge"
     );
   }
 };

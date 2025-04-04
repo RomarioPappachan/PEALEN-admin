@@ -67,6 +67,7 @@ const breadcrumbLabels = {
   videos: "Videos",
   upload: "Upload Video",
   edit: "Edit",
+  challenges: "Challenges",
 };
 
 export default function Breadcrumb() {

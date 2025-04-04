@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import {
+  fetchCategories,
   fetchCourses,
   fetchCourseById,
   createCourse,
@@ -10,12 +11,17 @@ import {
   createCourseVideo,
   updateCourseVideo,
   deleteCourseVideo,
+  submitChallenge,
+  updateChallenge,
 } from "@/api/course";
 
 export const useCourseStore = create((set) => ({
   courses: [],
   course: null,
-  videos: [], // Store course videos
+  videos: [],
+  categories: [],
+  video: {},
+  challenge: {},
   loading: false,
   error: null,
 
@@ -41,6 +47,17 @@ export const useCourseStore = create((set) => ({
     }
   },
 
+  // Fetch all categories
+  getCategories: async () => {
+    set({ loading: true, error: null });
+    try {
+      const data = await fetchCategories();
+      set({ categories: data.categories, loading: false });
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
   // Fetch course videos
   loadCourseVideos: async (courseId) => {
     set({ loading: true, error: null });
@@ -57,7 +74,7 @@ export const useCourseStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const data = await fetchCourseVideoById(videoId);
-      set({ video: data.video, loading: false });
+      set({ video: data.video, challenge: data.video.test, loading: false });
     } catch (error) {
       set({ error: error.message, loading: false });
     }
@@ -115,6 +132,7 @@ export const useCourseStore = create((set) => ({
       console.log(newVideos);
       set((state) => ({
         videos: [...state.videos, ...videoData.addVideos],
+        loading: false,
       }));
     } catch (error) {
       set({ error: error.message, loading: false });
@@ -144,6 +162,34 @@ export const useCourseStore = create((set) => ({
       await deleteCourseVideo(courseId, videoId);
       set((state) => ({
         videos: state.videos.filter((video) => video.id !== videoId),
+        loading: false,
+      }));
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  // Add a new challenge
+  addChallenge: async (videoId, challengeData) => {
+    set({ loading: true, error: null });
+    try {
+      const newChallenge = await submitChallenge(videoId, challengeData);
+      set((state) => ({
+        challenge: [...(state.challenge || []), newChallenge.test],
+        loading: false,
+      }));
+    } catch (error) {
+      set({ error: error.message, loading: false });
+    }
+  },
+
+  // Update an existing challenge
+  editChallenge: async (videoId, updatedData) => {
+    set({ loading: true, error: null });
+    try {
+      const edittedChallenge = await updateChallenge(videoId, updatedData);
+      set((state) => ({
+        challenge: edittedChallenge?.test,
         loading: false,
       }));
     } catch (error) {

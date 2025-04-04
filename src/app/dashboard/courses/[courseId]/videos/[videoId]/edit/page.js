@@ -174,6 +174,21 @@ function EditVideo() {
                   className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-2 focus:border-green-300"
                   required
                 />
+                <label
+                  htmlFor="videoTranscript"
+                  className="font-semibold text-black"
+                >
+                  Video Transcript :
+                </label>
+                <textarea
+                  name="videoTranscript"
+                  placeholder="Video Transcript"
+                  value={videoData.videoTranscript}
+                  rows={4}
+                  onChange={handleOnChange}
+                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-2 focus:border-green-300"
+                  required
+                />
               </div>
 
               {/* Demo Video and Audio */}
@@ -199,21 +214,6 @@ function EditVideo() {
                   name="audioUrl"
                   placeholder="Audio URL"
                   value={videoData.audioUrl}
-                  onChange={handleOnChange}
-                  className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-2 focus:border-green-300"
-                  required
-                />
-                <label
-                  htmlFor="videoTranscript"
-                  className="font-semibold text-black"
-                >
-                  Video Transcript :
-                </label>
-                <input
-                  type="url"
-                  name="videoTranscript"
-                  placeholder="Video Transcript"
-                  value={videoData.videoTranscript}
                   onChange={handleOnChange}
                   className="w-full p-2 px-4 border border-gray-300 rounded-2xl outline-none focus:border-2 focus:border-green-300"
                   required

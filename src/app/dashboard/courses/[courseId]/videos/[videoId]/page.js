@@ -35,12 +35,20 @@ function VideoDetail() {
         <div className="pt-8">
           <div className="flex justify-between items-end">
             <h3 className="text-2xl font-semibold">{video?.title}</h3>
-            <Link
-              href={`/dashboard/courses/${courseId}/videos/${videoId}/edit`}
-              className="px-4 py-2 flex justify-center items-center gap-2 rounded-lg bg-red-400 text-white hover:bg-red-500"
-            >
-              <LuPencilLine /> Edit Video Details
-            </Link>
+            <div className="flex gap-2">
+              <Link
+                href={`/dashboard/courses/${courseId}/videos/${videoId}/challenges`}
+                className="px-4 py-2 flex justify-center items-center gap-2 rounded-lg bg-green-400 text-white hover:bg-green-500"
+              >
+                Challenge
+              </Link>
+              <Link
+                href={`/dashboard/courses/${courseId}/videos/${videoId}/edit`}
+                className="px-4 py-2 flex justify-center items-center gap-2 rounded-lg bg-red-400 text-white hover:bg-red-500"
+              >
+                <LuPencilLine /> Edit Video Details
+              </Link>
+            </div>
           </div>
 
           <div className="mt-4 p-4 border-[1px] border-slate-300 rounded-lg">
