@@ -44,12 +44,16 @@
 // export default Navbar
 
 "use client";
+import { useAuthStore } from "@/store/authStore";
 import { useState, useEffect } from "react";
 
-import { LuSearch, LuSun, LuMoon } from "react-icons/lu";
+import { LuSearch, LuSun, LuMoon, LuChevronDown } from "react-icons/lu";
 
 function Navbar() {
+  const { user, logout } = useAuthStore();
   const [isDark, setIsDark] = useState(false);
+
+  const [isDropdown, setIsDropDown] = useState(false);
 
   // Load the theme from localStorage on mount
   useEffect(() => {
@@ -110,10 +114,29 @@ function Navbar() {
         </button>
 
         {/* User Profile */}
-        <div className="flex items-center gap-x-3">
+        <div className="flex items-center gap-x-4 relative">
           <img src="/Avatar.svg" alt="User Avatar" />
-          <span className="text-[16px] text-[#121721]">Jenny Peter</span>
-          <img src="/down-arrow.svg" alt="dropdown" className="pt-1" />
+          <span className="text-[16px] text-[#121721]">{user?.username}</span>
+          <button
+            className="cursor-pointer"
+            onClick={() => setIsDropDown(!isDropdown)}
+          >
+            <LuChevronDown
+              className={`text-2xl transition-all duration-300 ${
+                isDropdown ? "rotate-180" : ""
+              } `}
+            />
+          </button>
+          {isDropdown && (
+            <div className="absolute z-20 top-14 -right-0 w-64 h-96 p-4 bg-[var(--background-tertiary)] text-[var(--text-color-tertiary)] rounded-lg border border-gray-300 drop-shadow-lg">
+              <button
+                className="w-full p-2 cursor-pointer bg-[var(--background-secondary)] text-[var(--text-color-secondary)]"
+                onClick={logout}
+              >
+                Logout
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </nav>

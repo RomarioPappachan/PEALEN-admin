@@ -13,6 +13,7 @@ import {
   deleteCourseVideo,
   submitChallenge,
   updateChallenge,
+  deleteChallenge,
 } from "@/api/course";
 
 export const useCourseStore = create((set) => ({
@@ -174,8 +175,9 @@ export const useCourseStore = create((set) => ({
     set({ loading: true, error: null });
     try {
       const newChallenge = await submitChallenge(videoId, challengeData);
+
       set((state) => ({
-        challenge: [...(state.challenge || []), newChallenge.test],
+        challenge: newChallenge.test,
         loading: false,
       }));
     } catch (error) {
@@ -194,6 +196,30 @@ export const useCourseStore = create((set) => ({
       }));
     } catch (error) {
       set({ error: error.message, loading: false });
+    }
+  },
+
+  // Remove an existing challenge
+  removeChallenge: async (videoId, challengeId) => {
+    try {
+      const testId = { removeTestId: challengeId };
+      console.log(testId);
+      const res = await deleteChallenge(videoId, testId);
+      set({ challenge: {} });
+
+      // Optionally update state here if you're storing video/challenge data
+      // Example:
+      // const updatedVideos = get().courseVideos.map(video =>
+      //   video.id === videoId
+      //     ? { ...video, challenge: null }
+      //     : video
+      // );
+      // set({ courseVideos: updatedVideos });
+
+      return res;
+    } catch (error) {
+      console.error("Error deleting challenge:", error.message);
+      throw error;
     }
   },
 }));

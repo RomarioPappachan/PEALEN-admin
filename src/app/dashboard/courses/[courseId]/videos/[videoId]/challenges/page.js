@@ -9,14 +9,17 @@ import ChallengeQuestion from "@/components/courses/challenges/ChallengeQuestion
 import EditChallenge from "@/components/courses/challenges/EditChallenge";
 
 import { LuTrash2, LuPencilLine } from "react-icons/lu";
+import DeleteChallenge from "@/components/courses/challenges/DeleteChallenge";
 
 function Challenges() {
   const { videoId } = useParams();
-  const { challenge, getCourseVideoById, editChallenge } = useCourseStore();
+  const { challenge, getCourseVideoById } = useCourseStore();
 
   const [challengeData, setChallengeData] = useState({});
+
   const [isAddChallengeOpen, setIsAddChallengeOpen] = useState(false);
   const [isEditChallengeOpen, setIsEditChallengeOpen] = useState(false);
+  const [isDeleteChallengeOpen, setIsDeleteChallengeOpen] = useState(false);
 
   useEffect(() => {
     if (videoId) {
@@ -38,9 +41,9 @@ function Challenges() {
           <>
             <button
               className="px-4 py-2 bg-rose-600 text-white rounded-lg cursor-pointer hover:bg-rose-500 flex items-center gap-2"
-              // onClick={() => {
-              //   setIsEditChallengeOpen(true);
-              // }}
+              onClick={() => {
+                setIsDeleteChallengeOpen(true);
+              }}
             >
               <LuTrash2 />
               <span>Delete</span>
@@ -68,7 +71,7 @@ function Challenges() {
       </div>
 
       {!challengeData?.id ? (
-        <div className="p-6 rounded-lg border-2 border-gray-300 bg-[var(--background-tertiary)]">
+        <div className="p-6 rounded-lg border-2 border-gray-300 bg-[var(--background-primary)]">
           <h1 className="text-base text-black font-light">
             Please create a challenge for the video
           </h1>
@@ -97,10 +100,14 @@ function Challenges() {
       {isEditChallengeOpen && (
         <EditChallenge
           videoId={videoId}
-          // challenge={challenge}
-          // editChallenge={editChallenge}
-          // getCourseVideoById={getCourseVideoById}
           setIsEditChallengeOpen={setIsEditChallengeOpen}
+        />
+      )}
+      {isDeleteChallengeOpen && (
+        <DeleteChallenge
+          videoId={videoId}
+          challengeId={challengeData?.id}
+          setIsDeleteChallengeOpen={setIsDeleteChallengeOpen}
         />
       )}
     </div>

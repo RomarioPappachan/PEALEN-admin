@@ -273,3 +273,25 @@ export const updateChallenge = async (videoId, challengeData) => {
     );
   }
 };
+
+// DELETE an existing challenge
+export const deleteChallenge = async (videoId, challengeId) => {
+  try {
+    const res = await axios.put(
+      `${API_URL}/tests/manageTests/${videoId}`,
+      challengeId,
+      {
+        headers: {
+          Authorization: `${getToken()}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Deleted Challenge:", res.data);
+    return res.data;
+  } catch (error) {
+    throw new Error(
+      error.response?.data?.message || "Failed to delete challenge"
+    );
+  }
+};
